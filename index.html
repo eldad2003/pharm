@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PharmApp - Login</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1E90FF",
+            secondary: "#87CEEB",
+          },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+  />
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f8f9fa;
+      background-image: url(
+        "https://readdy.ai/api/search-image?query=abstract%2520futuristic%2520medical%2520background%2520with%2520blue%2520glowing%2520lines%2520and%2520particles%252C%2520pharmaceutical%2520technology%2520concept%252C%2520digital%2520healthcare%2520interface%252C%2520clean%2520modern%2520design%252C%2520soft%2520blue%2520gradient&width=375&height=812&seq=pharmapp-bg&orientation=portrait"
+      );
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(30, 144, 255, 0.1);
+    }
+    .input-glow:focus {
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+    }
+    .toggle-btn.active {
+      background-color: #1e90ff;
+      color: white;
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+    }
+    .floating {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+    .btn-hover {
+      transition: all 0.3s ease;
+    }
+    .btn-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(30, 144, 255, 0.2);
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Zoom-like Video Conferencing styles */
+    #conferenceContainer {
+      width: 100%;
+      height: 350px;
+      background: #f0f4ff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(30, 144, 255, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 8px;
+      gap: 1rem;
+      overflow-y: auto;
+    }
+    .video-box {
+      position: relative;
+      background: #000;
+      border-radius: 12px;
+      flex: 1 1 200px;
+      max-width: 300px;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .video-label {
+      position: absolute;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      width: 100%;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.9rem;
+      text-align: center;
+      user-select: none;
+    }
+
+    #conferenceControls {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    #conferenceControls button {
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    #conferenceControls button:hover {
+      background-color: #187bcd;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen px-4">
+
+  <!-- Original interface - Login/Register container -->
+  <div id="loginRegisterContainer" class="glass rounded-2xl w-full max-w-md p-6 mb-6">
+    <div class="text-center mb-8">
+      <div class="relative w-32 h-32 mx-auto floating mb-2">
+        <div class="absolute inset-0 bg-white/30 backdrop-blur-md rounded-full"></div>
+        <div
+          class="relative w-full h-full p-4 rounded-full overflow-hidden"
+          style="background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%); border: 1px solid rgba(255,255,255,0.2);"
+        >
+          <img
+            src="https://static.readdy.ai/image/c41393b44bf6ed3fe6a7a2d27e205db0/3a1c7712aef6c0e23c65d8121beb1c4c.jpeg"
+            alt="GPSA Logo"
+            class="w-full h-full object-contain mix-blend-overlay"
+          />
+        </div>
+      </div>
+      <p class="text-gray-600 mt-2">Your Pharmacy Education Companion</p>
+    </div>
+
+    <div class="flex bg-gray-100 p-1 rounded-full mb-6">
+      <button id="adminToggle" class="toggle-btn w-1/2 py-2 text-center rounded-full transition-all duration-300">Admin</button>
+      <button id="studentToggle" class="toggle-btn active w-1/2 py-2 text-center rounded-full transition-all duration-300">Student</button>
+    </div>
+
+    <form id="loginForm" class="space-y-4">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="ri-user-line text-gray-400"></i>
+        </div>
+        <input
+          type="text"
+          id="username"
+          class="input-glow w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-button focus:outline-none focus:border-primary transition-all"
+          placeholder="Username"
+          required
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+      </div>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="ri-lock-line text-gray-400"></i>
+        </div>
+        <input
+          type="password"
+          id="password"
+          class="input-glow w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-button focus:outline-none focus:border-primary transition-all"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="ri-group-line text-gray-400"></i>
+        </div>
+        <select
+          id="yearGroup"
+          class="input-glow w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-button focus:outline-none focus:border-primary transition-all appearance-none"
+          required
+        >
+          <option value="" disabled selected>Select Year Group</option>
+          <option value="PharmD1">Pharm D1</option>
+          <option value="PharmD2">Pharm D2</option>
+          <option value="PharmD3">Pharm D3</option>
+          <option value="PharmD4">Pharm D4</option>
+          <option value="PharmD5">Pharm D5</option>
+          <option value="PharmD6">Pharm D6</option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <i class="ri-arrow-down-s-line text-gray-400"></i>
+        </div>
+      </div>
+      <button
+        type="submit"
+        id="loginButton"
+        class="btn-hover w-full bg-primary text-white py-3 rounded-button transition-all !rounded-button"
+      >
+        Login
+      </button>
+    </form>
+    <div class="mt-6 text-center">
+      <p class="text-gray-600">
+        New student?
+        <a href="#" id="createAccountBtn" class="text-primary font-medium">Create an account</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Register form -->
+  <div
+    id="registerForm"
+    class="glass rounded-2xl w-full max-w-md p-6 hidden"
+  >
+    <div class="flex items-center mb-6">
+      <button id="backToLogin" class="p-2 rounded-full hover:bg-gray-100">
+        <i class="ri-arrow-left-line text-gray-600"></i>
+      </button>
+      <h2 class="text-xl font-semibold ml-2">Create Student Account</h2>
+    </div>
+    <form class="space-y-4" id="registerFormInner">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="ri-user-line text-gray-400"></i>
+        </div>
+        <input
+          type="text"
+          id="newUsername"
+          class="input-glow w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-button focus:outline-none focus:border-primary transition-all"
+          placeholder="Username"
+          required
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+      </div>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="ri-lock-line text-gray-400"></i>
+        </div>
+        <input
+          type="password"
+          id="newPassword"
+          class="input-glow w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-button focus:outline-none focus:border-primary transition-all"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="ri-lock-line text-gray-400"></i>
+        </div>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="input-glow w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-button focus:outline-none focus:border-primary transition-all"
+          placeholder="Confirm Password"
+          required
+        />
+      </div>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="ri-group-line text-gray-400"></i>
+        </div>
+        <select
+          id="newYearGroup"
+          class="input-glow w-full pl-10 pr-3 py-3 bg-white border border-gray-200 rounded-button focus:outline-none focus:border-primary transition-all appearance-none"
+          required
+        >
+          <option value="" disabled selected>Select Year Group</option>
+          <option value="PharmD1">Pharm D1</option>
+          <option value="PharmD2">Pharm D2</option>
+          <option value="PharmD3">Pharm D3</option>
+          <option value="PharmD4">Pharm D4</option>
+          <option value="PharmD5">Pharm D5</option>
+          <option value="PharmD6">Pharm D6</option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <i class="ri-arrow-down-s-line text-gray-400"></i>
+        </div>
+      </div>
+      <button
+        type="submit"
+        id="registerButton"
+        class="btn-hover w-full bg-primary text-white py-3 rounded-button transition-all !rounded-button"
+      >
+        Create Account
+      </button>
+    </form>
+  </div>
+
+  <!-- Toast Notification -->
+  <div
+    id="toast"
+    class="fixed bottom-4 left-1/2 transform -translate-x-1/2 glass px-4 py-3 rounded-full text-sm font-medium hidden"
+  >
+    <span id="toastMessage"></span>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div
+    id="adminDashboard"
+    class="glass rounded-2xl w-full max-w-3xl p-6 hidden flex flex-col"
+    style="min-height: 80vh;"
+  >
+    <h2 class="text-3xl font-semibold mb-6 text-center text-primary">Admin Dashboard</h2>
+
+    <div class="flex flex-wrap gap-6">
+      <!-- Timetable Section -->
+      <div class="flex-1 min-w-[280px] bg-white rounded-xl shadow p-4">
+        <h3 class="text-lg font-semibold mb-2 text-gray-800">Set Timetable</h3>
+        <textarea
+          id="timetableInput"
+          class="input-glow w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+          placeholder="Enter timetable details here..."
+          rows="8"
+        ></textarea>
+        <button
+          id="submitTimetable"
+          class="btn-hover mt-4 w-full bg-primary text-white py-3 rounded-button transition-all"
+        >
+          Submit Timetable
+        </button>
+      </div>
+
+      <!-- Study Materials Section -->
+      <div class="flex-1 min-w-[280px] bg-white rounded-xl shadow p-4 flex flex-col">
+        <h3 class="text-lg font-semibold mb-2 text-gray-800">Upload Study Materials</h3>
+        <input
+          type="file"
+          id="studyMaterialInput"
+          class="input-glow w-full py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition mb-4"
+          multiple
+          accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip"
+        />
+        <button
+          id="uploadMaterialBtn"
+          class="btn-hover w-full bg-primary text-white py-3 rounded-button transition-all"
+        >
+          Upload Materials
+        </button>
+        <p class="mt-3 text-sm text-gray-600 italic">You can upload multiple files.</p>
+      </div>
+    </div>
+
+    <!-- Conference Section -->
+    <div class="mt-8 bg-white rounded-xl shadow p-4 flex flex-col items-center">
+      <h3 class="text-lg font-semibold mb-4 text-gray-800">Host Video/Audio Conference</h3>
+      <label for="conferenceYearGroup" class="mb-2 font-medium text-gray-700"
+        >Select Year Group to Host Conference</label
+      >
+      <select
+        id="conferenceYearGroup"
+        class="input-glow w-48 py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition mb-4"
+      >
+        <option value="" selected disabled>Select Year Group</option>
+        <option value="PharmD1">Pharm D1</option>
+        <option value="PharmD2">Pharm D2</option>
+        <option value="PharmD3">Pharm D3</option>
+        <option value="PharmD4">Pharm D4</option>
+        <option value="PharmD5">Pharm D5</option>
+        <option value="PharmD6">Pharm D6</option>
+      </select>
+      <button
+        id="startConferenceBtn"
+        class="btn-hover w-48 bg-primary text-white py-3 rounded-button transition-all !rounded-button"
+      >
+        Start Conference
+      </button>
+    </div>
+
+    <!-- Video Conference Modal -->
+    <div
+      id="conferenceModal"
+      class="fixed inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center p-4 hidden z-50"
+    >
+      <div class="bg-white rounded-xl shadow-lg p-4 w-full max-w-5xl flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-semibold text-primary">Video Conference - <span id="conferenceRoomLabel"></span></h4>
+          <button
+            id="closeConferenceBtn"
+            class="text-gray-700 hover:text-primary text-2xl font-bold"
+            aria-label="Close Conference"
+            title="Close Conference"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="conferenceContainer" aria-label="Video conference grid" role="main"></div>
+        <div id="conferenceControls" class="mt-4 justify-center" role="toolbar" aria-label="Conference controls">
+          <button id="toggleMicBtn" aria-pressed="true" aria-label="Toggle microphone" title="Toggle microphone">
+            🎤 On
+          </button>
+          <button id="toggleCamBtn" aria-pressed="true" aria-label="Toggle camera" title="Toggle camera">
+            🎥 On
+          </button>
+          <button id="leaveConferenceBtn" aria-label="Leave conference" title="Leave conference">
+            ✋ Leave
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Dashboard -->
+  <div
+    id="studentDashboard"
+    class="glass rounded-2xl w-full max-w-3xl p-6 hidden flex flex-col"
+    style="min-height: 80vh;"
+  >
+    <h2 class="text-3xl font-semibold mb-6 text-center text-primary">Student Dashboard</h2>
+
+    <div class="flex flex-wrap gap-6">
+      <!-- Timetable Display -->
+      <div class="flex-1 min-w-[280px] bg-white rounded-xl shadow p-4">
+        <h3 class="text-lg font-semibold mb-2 text-gray-800">Your Timetable</h3>
+        <pre
+          id="studentTimetableDisplay"
+          class="whitespace-pre-wrap text-gray-700 p-3 border border-gray-300 rounded-lg min-h-[200px] bg-gray-50"
+          aria-live="polite"
+          aria-label="Timetable content"
+        >Timetable will be displayed here after admin sets it.</pre>
+      </div>
+
+      <!-- Study Materials List -->
+      <div class="flex-1 min-w-[280px] bg-white rounded-xl shadow p-4 flex flex-col">
+        <h3 class="text-lg font-semibold mb-2 text-gray-800">Study Materials</h3>
+        <ul
+          id="studentStudyMaterialsList"
+          class="overflow-y-auto h-52 list-disc pl-5 text-blue-700 underline cursor-pointer"
+          aria-label="List of study materials"
+          tabindex="0"
+        >
+          <li>No materials available yet.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Join Conference -->
+    <div class="mt-8 flex flex-col items-center">
+      <button
+        id="joinConferenceBtn"
+        class="btn-hover w-48 bg-primary text-white py-3 rounded-button transition-all"
+        aria-label="Join conference"
+      >
+        Join Conference
+      </button>
+      <p
+        id="conferenceStatusMsg"
+        class="mt-2 text-sm text-gray-600"
+        aria-live="polite"
+      ></p>
+    </div>
+
+    <!-- Video Conference Modal (shared with Admin) -->
+    <div
+      id="studentConferenceModal"
+      class="fixed inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center p-4 hidden z-50"
+    >
+      <div class="bg-white rounded-xl shadow-lg p-4 w-full max-w-5xl flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-semibold text-primary">Video Conference - <span id="studentConferenceRoomLabel"></span></h4>
+          <button
+            id="studentCloseConferenceBtn"
+            class="text-gray-700 hover:text-primary text-2xl font-bold"
+            aria-label="Close Conference"
+            title="Close Conference"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="studentConferenceContainer" aria-label="Video conference grid" role="main"></div>
+        <div id="studentConferenceControls" class="mt-4 justify-center" role="toolbar" aria-label="Conference controls">
+          <button id="studentToggleMicBtn" aria-pressed="true" aria-label="Toggle microphone" title="Toggle microphone">
+            🎤 On
+          </button>
+          <button id="studentToggleCamBtn" aria-pressed="true" aria-label="Toggle camera" title="Toggle camera">
+            🎥 On
+          </button>
+          <button id="studentLeaveConferenceBtn" aria-label="Leave conference" title="Leave conference">
+            ✋ Leave
+          </button>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const adminToggle = document.getElementById("adminToggle");
+      const studentToggle = document.getElementById("studentToggle");
+      const loginRegisterContainer = document.getElementById("loginRegisterContainer");
+      const adminDashboard = document.getElementById("adminDashboard");
+      const studentDashboard = document.getElementById("studentDashboard");
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const registerFormInner = document.getElementById("registerFormInner");
+      const createAccountBtn = document.getElementById("createAccountBtn");
+      const backToLogin = document.getElementById("backToLogin");
+      const toast = document.getElementById("toast");
+      const toastMessage = document.getElementById("toastMessage");
+
+      // Admin dashboard elements
+      const timetableInput = document.getElementById("timetableInput");
+      const submitTimetable = document.getElementById("submitTimetable");
+      const studyMaterialInput = document.getElementById("studyMaterialInput");
+      const uploadMaterialBtn = document.getElementById("uploadMaterialBtn");
+      const conferenceYearGroupSelect = document.getElementById("conferenceYearGroup");
+      const startConferenceBtn = document.getElementById("startConferenceBtn");
+
+      // Student dashboard elements
+      const studentTimetableDisplay = document.getElementById("studentTimetableDisplay");
+      const studentStudyMaterialsList = document.getElementById("studentStudyMaterialsList");
+      const joinConferenceBtn = document.getElementById("joinConferenceBtn");
+      const conferenceStatusMsg = document.getElementById("conferenceStatusMsg");
+
+      // Conference modal elements
+      const conferenceModal = document.getElementById("conferenceModal");
+      const conferenceContainer = document.getElementById("conferenceContainer");
+      const closeConferenceBtn = document.getElementById("closeConferenceBtn");
+      const conferenceRoomLabel = document.getElementById("conferenceRoomLabel");
+      const toggleMicBtn = document.getElementById("toggleMicBtn");
+      const toggleCamBtn = document.getElementById("toggleCamBtn");
+      const leaveConferenceBtn = document.getElementById("leaveConferenceBtn");
+
+      // Student conference modal elements
+      const studentConferenceModal = document.getElementById("studentConferenceModal");
+      const studentConferenceContainer = document.getElementById("studentConferenceContainer");
+      const studentCloseConferenceBtn = document.getElementById("studentCloseConferenceBtn");
+      const studentConferenceRoomLabel = document.getElementById("studentConferenceRoomLabel");
+      const studentToggleMicBtn = document.getElementById("studentToggleMicBtn");
+      const studentToggleCamBtn = document.getElementById("studentToggleCamBtn");
+      const studentLeaveConferenceBtn = document.getElementById("studentLeaveConferenceBtn");
+
+      // Toast helper
+      function showToast(msg, isError = false) {
+        toastMessage.textContent = msg;
+        toast.classList.remove("hidden", "bg-green-500", "bg-red-500");
+        toast.classList.add(isError ? "bg-red-500" : "bg-green-500", "text-white");
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+          toast.classList.add("hidden");
+        }, 3000);
+      }
+
+      // Admin toggle on login page
+      adminToggle.addEventListener("click", () => {
+        adminToggle.classList.add("active");
+        studentToggle.classList.remove("active");
+      });
+
+      studentToggle.addEventListener("click", () => {
+        studentToggle.classList.add("active");
+        adminToggle.classList.remove("active");
+      });
+
+      // Show register form toggle
+      createAccountBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        loginRegisterContainer.classList.add("hidden");
+        registerForm.classList.remove("hidden");
+      });
+
+      backToLogin.addEventListener("click", () => {
+        registerForm.classList.add("hidden");
+        loginRegisterContainer.classList.remove("hidden");
+      });
+
+      // Store users in localStorage (basic demo)
+      if (!localStorage.getItem("users")) {
+        localStorage.setItem(
+          "users",
+          JSON.stringify([
+            { username: "student1", password: "pass123", yearGroup: "PharmD1", role: "student" },
+          ])
+        );
+      }
+      if (!localStorage.getItem("timetables")) {
+        localStorage.setItem("timetables", JSON.stringify({}));
+      }
+      if (!localStorage.getItem("studyMaterials")) {
+        localStorage.setItem("studyMaterials", JSON.stringify({}));
+      }
+      if (!localStorage.getItem("conferences")) {
+        localStorage.setItem("conferences", JSON.stringify({}));
+      }
+
+      // Register form submission
+      registerFormInner.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("newUsername").value.trim();
+        const password = document.getElementById("newPassword").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const yearGroup = document.getElementById("newYearGroup").value;
+        if (!username || !password || !confirmPassword || !yearGroup) {
+          showToast("Please fill in all fields", true);
+          return;
+        }
+        if (password !== confirmPassword) {
+          showToast("Passwords do not match", true);
+          return;
+        }
+        if (password.length < 6) {
+          showToast("Password must be at least 6 characters", true);
+          return;
+        }
+        // Check username uniqueness
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        if (users.find((u) => u.username.toLowerCase() === username.toLowerCase())) {
+          showToast("Username already exists", true);
+          return;
+        }
+        users.push({ username, password, yearGroup, role: "student" });
+        localStorage.setItem("users", JSON.stringify(users));
+        showToast("Account created successfully");
+        setTimeout(() => {
+          registerForm.classList.add("hidden");
+          loginRegisterContainer.classList.remove("hidden");
+        }, 1000);
+        registerFormInner.reset();
+      });
+
+      // Login form submission
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+        const yearGroup = document.getElementById("yearGroup").value;
+        const isAdmin = adminToggle.classList.contains("active");
+        if (!username || !password || !yearGroup) {
+          showToast("Please fill in all fields", true);
+          return;
+        }
+
+        if (isAdmin) {
+          // Admin login with hardcoded password
+          if (username.toLowerCase() === "admin" && password === "admin123") {
+            showToast("Admin login successful");
+            loginRegisterContainer.classList.add("hidden");
+            adminDashboard.classList.remove("hidden");
+            adminDashboard.dataset.yearGroup = yearGroup; // Store selected yearGroup for admin session
+            loadAdminTimetable(yearGroup);
+            loadAdminMaterials(yearGroup);
+            conferenceYearGroupSelect.value = yearGroup;
+          } else {
+            showToast("Invalid admin credentials", true);
+          }
+        } else {
+          // Validate student credentials
+          const users = JSON.parse(localStorage.getItem("users")) || [];
+          const user = users.find(
+            (u) =>
+              u.username.toLowerCase() === username.toLowerCase() &&
+              u.password === password &&
+              u.yearGroup === yearGroup &&
+              u.role === "student"
+          );
+          if (user) {
+            showToast("Student login successful");
+            loginRegisterContainer.classList.add("hidden");
+            studentDashboard.classList.remove("hidden");
+            studentDashboard.dataset.username = user.username;
+            studentDashboard.dataset.yearGroup = user.yearGroup;
+            loadStudentTimetable(user.yearGroup);
+            loadStudentMaterials(user.yearGroup);
+            checkConferenceStatus(user.yearGroup);
+          } else {
+            showToast("Invalid student credentials or year group", true);
+          }
+        }
+      });
+
+      // Load timetable for admin for editing
+      function loadAdminTimetable(yearGroup) {
+        const timetables = JSON.parse(localStorage.getItem("timetables")) || {};
+        timetableInput.value = timetables[yearGroup] || "";
+      }
+
+      // Load study materials for admin for info (no UI to edit currently)
+      function loadAdminMaterials(yearGroup) {
+        const studyMaterials = JSON.parse(localStorage.getItem("studyMaterials")) || {};
+        // admin doesn't list materials but could add future features
+      }
+
+      // Submit timetable by admin
+      submitTimetable.addEventListener("click", () => {
+        const yearGroup = adminDashboard.dataset.yearGroup;
+        if (!yearGroup) {
+          showToast("Year group not selected", true);
+          return;
+        }
+        const content = timetableInput.value.trim();
+        if (!content) {
+          showToast("Timetable cannot be empty", true);
+          return;
+        }
+        const timetables = JSON.parse(localStorage.getItem("timetables")) || {};
+        timetables[yearGroup] = content;
+        localStorage.setItem("timetables", JSON.stringify(timetables));
+        showToast(`Timetable saved for ${yearGroup}`);
+      });
+
+      // Upload study materials by admin
+      uploadMaterialBtn.addEventListener("click", () => {
+        const yearGroup = adminDashboard.dataset.yearGroup;
+        if (!yearGroup) {
+          showToast("Year group not selected", true);
+          return;
+        }
+        const files = studyMaterialInput.files;
+        if (!files.length) {
+          showToast("No files selected", true);
+          return;
+        }
+        const studyMaterials = JSON.parse(localStorage.getItem("studyMaterials")) || {};
+        studyMaterials[yearGroup] = studyMaterials[yearGroup] || [];
+        Array.from(files).forEach((file) => {
+          // Store files as objects with name and base64 data
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            studyMaterials[yearGroup].push({
+              name: file.name,
+              dataUrl: event.target.result,
+              id: Date.now() + Math.random(),
+            });
+            localStorage.setItem("studyMaterials", JSON.stringify(studyMaterials));
+            loadStudentMaterials(yearGroup); // update student list immediately
+          };
+          reader.readAsDataURL(file);
+        });
+        studyMaterialInput.value = "";
+        showToast("Uploading files...");
+      });
+
+      // Load student timetable for viewing
+      function loadStudentTimetable(yearGroup) {
+        const timetables = JSON.parse(localStorage.getItem("timetables")) || {};
+        studentTimetableDisplay.textContent = timetables[yearGroup] || "No timetable set yet.";
+      }
+
+      // Load student study materials list
+      function loadStudentMaterials(yearGroup) {
+        const studyMaterials = JSON.parse(localStorage.getItem("studyMaterials")) || {};
+        const materials = studyMaterials[yearGroup] || [];
+        studentStudyMaterialsList.innerHTML = "";
+        if (materials.length === 0) {
+          studentStudyMaterialsList.innerHTML = "<li>No study materials available.</li>";
+          return;
+        }
+        materials.forEach((mat) => {
+          const li = document.createElement("li");
+          li.textContent = mat.name;
+          li.tabIndex = 0;
+          li.className = "hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer";
+          li.title = "Click to download";
+          li.style.userSelect = "none";
+          li.addEventListener("click", () => {
+            const a = document.createElement("a");
+            a.href = mat.dataUrl;
+            a.download = mat.name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          });
+          studentStudyMaterialsList.appendChild(li);
+        });
+      }
+
+      /// Conference WebRTC Setup for simplicity: uses simple local BroadcastChannel signaling for demo
+
+      // Global conference state
+      let localStream = null;
+      let peers = {}; // key: peerId, value: RTCPeerConnection
+      let isMicOn = true;
+      let isCamOn = true;
+      let currentConferenceRoom = null;
+      let localVideoElement = null;
+      let peerId = null;
+
+      // Generate simple unique id for this client
+      function generatePeerId() {
+        return "peer_" + Math.floor(Math.random() * 1000000) + "_" + Date.now();
+      }
+
+      // Show/hide video conference modal (for admin or student)
+      function openConferenceModal(adminView = true) {
+        if (adminView) {
+          conferenceModal.classList.remove("hidden");
+        } else {
+          studentConferenceModal.classList.remove("hidden");
+        }
+      }
+      function closeConferenceModal(adminView = true) {
+        if (adminView) {
+          conferenceModal.classList.add("hidden");
+          cleanupConference();
+        } else {
+          studentConferenceModal.classList.add("hidden");
+          cleanupConference();
+        }
+      }
+
+      // Simple signaling using BroadcastChannel (all tabs on same origin)
+      const signalingChannel = new BroadcastChannel("pharmapp-signaling");
+
+      function sendSignal(data) {
+        signalingChannel.postMessage(data);
+      }
+
+      signalingChannel.onmessage = async (event) => {
+        const msg = event.data;
+        if (!msg || msg.room !== currentConferenceRoom || msg.from === peerId) return;
+
+        if (msg.type === "offer") {
+          // Received offer, create peer connection and respond with answer
+          if (!peers[msg.from]) await createPeerConnection(msg.from, false);
+
+          const pc = peers[msg.from];
+          await pc.setRemoteDescription(new RTCSessionDescription(msg.offer));
+          const answer = await pc.createAnswer();
+          await pc.setLocalDescription(answer);
+          sendSignal({
+            type: "answer",
+            answer: answer,
+            from: peerId,
+            to: msg.from,
+            room: currentConferenceRoom,
+          });
+        } else if (msg.type === "answer") {
+          const pc = peers[msg.from];
+          if (!pc) return;
+          await pc.setRemoteDescription(new RTCSessionDescription(msg.answer));
+        } else if (msg.type === "ice-candidate") {
+          const pc = peers[msg.from];
+          if (!pc) return;
+          try {
+            await pc.addIceCandidate(msg.candidate);
+          } catch (e) {
+            console.warn("Error adding ICE candidate:", e);
+          }
+        }
+      };
+
+      async function createPeerConnection(remoteId, isOfferer) {
+        const pc = new RTCPeerConnection({
+          iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+        });
+
+        pc.onicecandidate = (event) => {
+          if (event.candidate) {
+            sendSignal({
+              type: "ice-candidate",
+              candidate: event.candidate,
+              from: peerId,
+              to: remoteId,
+              room: currentConferenceRoom,
+            });
+          }
+        };
+        pc.ontrack = (event) => {
+          addRemoteStream(event.streams[0], remoteId);
+        };
+
+        if (localStream) {
+          localStream.getTracks().forEach((track) => {
+            pc.addTrack(track, localStream);
+          });
+        }
+
+        peers[remoteId] = pc;
+
+        if (isOfferer) {
+          const offer = await pc.createOffer();
+          await pc.setLocalDescription(offer);
+          sendSignal({
+            type: "offer",
+            offer: offer,
+            from: peerId,
+            to: remoteId,
+            room: currentConferenceRoom,
+          });
+        }
+      }
+
+      // Maintain list of remote videos
+      const remoteVideoElements = {};
+
+      function addRemoteStream(stream, remoteId) {
+        if (remoteVideoElements[remoteId]) return; // Already added
+        const container = currentIsAdminView() ? conferenceContainer : studentConferenceContainer;
+        const videoBox = document.createElement("div");
+        videoBox.className = "video-box";
+        const video = document.createElement("video");
+        video.autoplay = true;
+        video.playsInline = true;
+        video.srcObject = stream;
+        videoBox.appendChild(video);
+        const label = document.createElement("div");
+        label.className = "video-label";
+        label.textContent = remoteId;
+        videoBox.appendChild(label);
+        container.appendChild(videoBox);
+        remoteVideoElements[remoteId] = videoBox;
+      }
+
+      function removeAllRemoteStreams() {
+        const container = currentIsAdminView() ? conferenceContainer : studentConferenceContainer;
+        Object.values(remoteVideoElements).forEach((elem) => {
+          elem.remove();
+        });
+        Object.keys(remoteVideoElements).forEach((key) => delete remoteVideoElements[key]);
+      }
+
+      // Setup local video
+      async function setupLocalStream() {
+        try {
+          localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+          if (localVideoElement) {
+            localVideoElement.srcObject = localStream;
+          }
+        } catch (err) {
+          showToast("Could not access camera/microphone.", true);
+          console.error(err);
+        }
+      }
+
+      function currentIsAdminView() {
+        return (
+          !conferenceModal.classList.contains("hidden") &&
+          conferenceModal.style.display !== "none"
+        );
+      }
+
+      // Initialize local video element for admin conferencing modal
+      function createLocalVideoElement() {
+        const container = conferenceContainer;
+        if (localVideoElement) {
+          localVideoElement.remove();
+          localVideoElement = null;
+        }
+        const videoBox = document.createElement("div");
+        videoBox.className = "video-box";
+        const video = document.createElement("video");
+        video.autoplay = true;
+        video.muted = true;
+        video.playsInline = true;
+        videoBox.appendChild(video);
+        const label = document.createElement("div");
+        label.className = "video-label";
+        label.textContent = "You (Admin)";
+        videoBox.appendChild(label);
+        container.prepend(videoBox);
+        localVideoElement = video;
+      }
+
+      // Initialize local video element for student conferencing modal
+      let studentLocalVideoElement = null;
+      function createStudentLocalVideoElement() {
+        const container = studentConferenceContainer;
+        if (studentLocalVideoElement) {
+          studentLocalVideoElement.remove();
+          studentLocalVideoElement = null;
+        }
+        const videoBox = document.createElement("div");
+        videoBox.className = "video-box";
+        const video = document.createElement("video");
+        video.autoplay = true;
+        video.muted = true;
+        video.playsInline = true;
+        videoBox.appendChild(video);
+        const label = document.createElement("div");
+        label.className = "video-label";
+        label.textContent = "You";
+        videoBox.appendChild(label);
+        container.prepend(videoBox);
+        studentLocalVideoElement = video;
+      }
+
+      // Toggle mic and cam controls
+      toggleMicBtn.addEventListener("click", () => {
+        if (!localStream) return;
+        isMicOn = !isMicOn;
+        localStream.getAudioTracks().forEach((t) => (t.enabled = isMicOn));
+        toggleMicBtn.textContent = isMicOn ? "🎤 On" : "🎤 Off";
+        toggleMicBtn.setAttribute("aria-pressed", isMicOn ? "true" : "false");
+      });
+
+      toggleCamBtn.addEventListener("click", () => {
+        if (!localStream) return;
+        isCamOn = !isCamOn;
+        localStream.getVideoTracks().forEach((t) => (t.enabled = isCamOn));
+        toggleCamBtn.textContent = isCamOn ? "🎥 On" : "🎥 Off";
+        toggleCamBtn.setAttribute("aria-pressed", isCamOn ? "true" : "false");
+      });
+
+      leaveConferenceBtn.addEventListener("click", () => {
+        closeConferenceModal(true);
+      });
+
+      // Student conferencing controls (shared functionality)
+      studentToggleMicBtn.addEventListener("click", () => {
+        if (!localStream) return;
+        isMicOn = !isMicOn;
+        localStream.getAudioTracks().forEach((t) => (t.enabled = isMicOn));
+        studentToggleMicBtn.textContent = isMicOn ? "🎤 On" : "🎤 Off";
+        studentToggleMicBtn.setAttribute("aria-pressed", isMicOn ? "true" : "false");
+      });
+
+      studentToggleCamBtn.addEventListener("click", () => {
+        if (!localStream) return;
+        isCamOn = !isCamOn;
+        localStream.getVideoTracks().forEach((t) => (t.enabled = isCamOn));
+        studentToggleCamBtn.textContent = isCamOn ? "🎥 On" : "🎥 Off";
+        studentToggleCamBtn.setAttribute("aria-pressed", isCamOn ? "true" : "false");
+      });
+
+      studentLeaveConferenceBtn.addEventListener("click", () => {
+        closeConferenceModal(false);
+      });
+
+      closeConferenceBtn.addEventListener("click", () => {
+        closeConferenceModal(true);
+      });
+      studentCloseConferenceBtn.addEventListener("click", () => {
+        closeConferenceModal(false);
+      });
+
+      // Cleanup conference: close peers and streams
+      function cleanupConference() {
+        for (const p in peers) {
+          peers[p].close();
+        }
+        peers = {};
+        if (localStream) {
+          localStream.getTracks().forEach((t) => t.stop());
+          localStream = null;
+        }
+        removeAllRemoteStreams();
+        if (localVideoElement) {
+          localVideoElement.remove();
+          localVideoElement = null;
+        }
+        if (studentLocalVideoElement) {
+          studentLocalVideoElement.remove();
+          studentLocalVideoElement = null;
+        }
+        currentConferenceRoom = null;
+      }
+
+      // Start conference btn clicked by admin
+      startConferenceBtn.addEventListener("click", async () => {
+        const yearGroup = conferenceYearGroupSelect.value;
+        if (!yearGroup) {
+          showToast("Please select a year group to host conference", true);
+          return;
+        }
+        currentConferenceRoom = yearGroup;
+        peerId = generatePeerId();
+
+        // Save conference active status in localStorage for students to know
+        const conferences = JSON.parse(localStorage.getItem("conferences")) || {};
+        conferences[yearGroup] = { host: peerId, active: true };
+        localStorage.setItem("conferences", JSON.stringify(conferences));
+
+        conferenceRoomLabel.textContent = `Year Group: ${yearGroup}`;
+        openConferenceModal(true);
+        await setupLocalStream();
+        createLocalVideoElement();
+
+        // Admin waits for connections, no auto connect to others because no signaling server
+        showToast("Conference started. Students can join now.");
+      });
+
+      // Students check conference status for their year group
+      function checkConferenceStatus(yearGroup) {
+        const conferences = JSON.parse(localStorage.getItem("conferences")) || {};
+        const conf = conferences[yearGroup];
+        if (conf && conf.active) {
+          conferenceStatusMsg.textContent = `Conference is live for your year group. You can join now.`;
+          joinConferenceBtn.disabled = false;
+        } else {
+          conferenceStatusMsg.textContent = `No active conference at the moment.`;
+          joinConferenceBtn.disabled = true;
+        }
+      }
+
+      // Student join conference clicked
+      joinConferenceBtn.addEventListener("click", async () => {
+        const yearGroup = studentDashboard.dataset.yearGroup;
+        if (!yearGroup) return showToast("Year group not found", true);
+        const conferences = JSON.parse(localStorage.getItem("conferences")) || {};
+        const conf = conferences[yearGroup];
+        if (!conf || !conf.active) {
+          showToast("No active conference for your year group", true);
+          return;
+        }
+        currentConferenceRoom = yearGroup;
+        peerId = generatePeerId();
+
+        studentConferenceRoomLabel.textContent = `Year Group: ${yearGroup}`;
+        openConferenceModal(false);
+        await setupLocalStream();
+        createStudentLocalVideoElement();
+
+        showToast("Joined the conference. Waiting for others...");
+        // Since there's no real signaling server, this demo cannot connect multiple tabs.
+        // The signaling channel tries to connect if multiple tabs on same origin.
+      });
+
+      // Utility: re-check conference status every 10 seconds
+      setInterval(() => {
+        if (studentDashboard.style.display !== "none" && studentDashboard.style.display !== "") {
+          const y = studentDashboard.dataset.yearGroup;
+          if (y) checkConferenceStatus(y);
+        }
+      }, 10000);
+    });
+  </script>
+</body>
+</html>
+
+
